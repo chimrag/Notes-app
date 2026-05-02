@@ -8,15 +8,16 @@ function SignupPage() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', form);
-      alert('Signup successful! Please login.');
+      setLoading(true);
+      await axios.post(`https://notes-app-production-eb4a.up.railway.app/api/auth/signup`, form);
+      alert('Signup successful!');
       navigate('/login');
     } catch (err) {
       alert(err.response?.data?.message || 'Signup failed');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -44,51 +45,31 @@ const styles = {
   container: {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontFamily: "'Segoe UI', sans-serif",
   },
   card: {
     background: 'rgba(255,255,255,0.05)',
     backdropFilter: 'blur(20px)',
     border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '24px',
-    padding: '48px 40px',
-    width: '100%',
-    maxWidth: '400px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    borderRadius: '24px', padding: '48px 40px', width: '100%', maxWidth: '400px',
+    display: 'flex', flexDirection: 'column', alignItems: 'center',
     boxShadow: '0 25px 50px rgba(0,0,0,0.4)',
   },
   iconWrapper: { fontSize: '48px', marginBottom: '8px' },
   title: { color: '#fff', fontSize: '32px', fontWeight: '700', margin: '0 0 4px' },
   subtitle: { color: 'rgba(255,255,255,0.5)', marginBottom: '32px', fontSize: '14px' },
   input: {
-    width: '100%',
-    padding: '14px 16px',
-    marginBottom: '16px',
-    borderRadius: '12px',
-    border: '1px solid rgba(255,255,255,0.15)',
-    background: 'rgba(255,255,255,0.08)',
-    color: '#fff',
-    fontSize: '15px',
-    outline: 'none',
-    boxSizing: 'border-box',
+    width: '100%', padding: '14px 16px', marginBottom: '16px',
+    borderRadius: '12px', border: '1px solid rgba(255,255,255,0.15)',
+    background: 'rgba(255,255,255,0.08)', color: '#fff',
+    fontSize: '15px', outline: 'none', boxSizing: 'border-box',
   },
   button: {
-    width: '100%',
-    padding: '14px',
-    borderRadius: '12px',
-    border: 'none',
+    width: '100%', padding: '14px', borderRadius: '12px', border: 'none',
     background: 'linear-gradient(135deg, #667eea, #764ba2)',
-    color: '#fff',
-    fontSize: '16px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    marginTop: '8px',
-    marginBottom: '20px',
+    color: '#fff', fontSize: '16px', fontWeight: '600', cursor: 'pointer',
+    marginTop: '8px', marginBottom: '20px',
   },
   link: { color: 'rgba(255,255,255,0.5)', fontSize: '14px' },
   a: { color: '#667eea', textDecoration: 'none', fontWeight: '600' },

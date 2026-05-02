@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API = 'https://notes-app-production-eb4a.up.railway.app';
+
 function HomePage() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
@@ -16,24 +18,24 @@ function HomePage() {
   useEffect(() => { fetchNotes(); }, []);
 
   const fetchNotes = async () => {
-    const res = await axios.get('http://localhost:5000/api/notes', { headers });
+    const res = await axios.get(`${API}/api/notes`, { headers });
     setNotes(res.data);
   };
 
   const saveNote = async () => {
     if (!title || !content) return alert('Fill in both fields!');
     if (editId) {
-      await axios.put(`http://localhost:5000/api/notes/${editId}`, { title, content }, { headers });
+      await axios.put(`${API}/api/notes/${editId}`, { title, content }, { headers });
       setEditId(null);
     } else {
-      await axios.post('http://localhost:5000/api/notes', { title, content }, { headers });
+      await axios.post(`${API}/api/notes`, { title, content }, { headers });
     }
     setTitle(''); setContent(''); setShowForm(false);
     fetchNotes();
   };
 
   const deleteNote = async (id) => {
-    await axios.delete(`http://localhost:5000/api/notes/${id}`, { headers });
+    await axios.delete(`${API}/api/notes/${id}`, { headers });
     fetchNotes();
   };
 
@@ -48,7 +50,6 @@ function HomePage() {
 
   return (
     <div style={styles.container}>
-      {/* Navbar */}
       <div style={styles.navbar}>
         <span style={styles.logo}>📝 NoteFlow</span>
         <div style={styles.navRight}>
@@ -57,7 +58,6 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Main */}
       <div style={styles.main}>
         <div style={styles.header}>
           <h2 style={styles.heading}>My Notes</h2>
@@ -66,7 +66,6 @@ function HomePage() {
           </button>
         </div>
 
-        {/* Form */}
         {showForm && (
           <div style={styles.form}>
             <input style={styles.input} placeholder="Note title..."
@@ -79,7 +78,6 @@ function HomePage() {
           </div>
         )}
 
-        {/* Notes Grid */}
         {notes.length === 0 ? (
           <div style={styles.empty}>
             <p style={styles.emptyText}>No notes yet. Create your first one! 🚀</p>
