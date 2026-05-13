@@ -1,4 +1,5 @@
 console.log("🔥 NEW SERVER FILE RUNNING 🔥");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,7 +8,14 @@ require("dotenv").config();
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://notes-app-gamma-navy.vercel.app"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // test route
@@ -18,14 +26,14 @@ app.get("/test", (req, res) => {
 
 // routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/notes", require("./routes/notes")); // 👈 ADD THIS LINE
-
-// server
-app.listen(process.env.PORT, () => {
-  console.log(`Server on port ${process.env.PORT}`);
-});
+app.use("/api/notes", require("./routes/notes"));
 
 // DB connect
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
+
+// server
+app.listen(process.env.PORT, () => {
+  console.log(`Server on port ${process.env.PORT}`);
+});
